@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neo Consulting · Requerimientos</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F3EE;
+    --surface: #FDFCFA;
+    --border: #E2DDD5;
+    --border-strong: #C8C2B8;
+    --text: #1A1714;
+    --text-2: #6B6560;
+    --text-3: #A09890;
+    --accent: #1A1714;
+    --accent-fg: #F5F3EE;
+    --green: #2D6A4F;
+    --green-bg: #D8F3DC;
+    --amber: #92400E;
+    --amber-bg: #FEF3C7;
+    --red: #991B1B;
+    --red-bg: #FEE2E2;
+    --blue: #1E3A5F;
+    --blue-bg: #DBEAFE;
+    --gray: #4B5563;
+    --gray-bg: #F3F4F6;
+    --radius: 6px;
+    --radius-lg: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* SIDEBAR */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--text);
+    color: var(--bg);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+  }
+
+  .logo {
+    padding: 0 24px 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+  }
+
+  .logo-mark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 3px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    cursor: pointer;
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  .nav-item:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.05); }
+  .nav-item.active { color: #fff; border-left-color: #fff; background: rgba(255,255,255,0.08); }
+
+  .nav-icon { width: 16px; height: 16px; opacity: 0.7; flex-shrink: 0; }
+  .nav-item.active .nav-icon { opacity: 1; }
+
+  .nav-section {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    padding: 18px 24px 6px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: 220px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .topbar-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-family: 'Syne', sans-serif;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn:hover { background: var(--bg); border-color: var(--border-strong); }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  .btn-primary:hover { background: #333; border-color: #333; }
+
+  /* CONTENT */
+  .content { padding: 28px 32px; flex: 1; }
+
+  /* METRICS */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .metric-card.total::before { background: var(--text); }
+  .metric-card.active::before { background: #378ADD; }
+  .metric-card.done::before { background: var(--green); }
+  .metric-card.urgent::before { background: #E24B4A; }
+
+  .metric-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 8px;
+  }
+
+  .metric-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .metric-sub {
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ALERTS */
+  .alerts { margin-bottom: 20px; }
+
+  .alert {
+    background: #FEF3C7;
+    border: 1px solid #F59E0B;
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 12px;
+    color: #78350F;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .alert.danger {
+    background: #FEE2E2;
+    border-color: #EF4444;
+    color: #7F1D1D;
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .filters {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .filter-btn {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    transition: all 0.15s;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  /* TABLE */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    padding: 11px 16px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    font-weight: 500;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+    cursor: pointer;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--bg); }
+
+  td {
+    padding: 13px 16px;
+    vertical-align: middle;
+  }
+
+  .req-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-3);
+  }
+
+  .req-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .req-client {
+    font-size: 11px;
+    color: var(--text-3);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* STATUS BADGES */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+  .s-nuevo { background: var(--gray-bg); color: var(--gray); }
+  .s-nuevo .badge-dot { background: var(--gray); }
+  .s-revision { background: var(--blue-bg); color: var(--blue); }
+  .s-revision .badge-dot { background: #378ADD; }
+  .s-progreso { background: var(--amber-bg); color: var(--amber); }
+  .s-progreso .badge-dot { background: #F59E0B; }
+  .s-completado { background: var(--green-bg); color: var(--green); }
+  .s-completado .badge-dot { background: var(--green); }
+  .s-cancelado { background: var(--red-bg); color: var(--red); }
+  .s-cancelado .badge-dot { background: #EF4444; }
+
+  /* PRIORITY */
+  .prio {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .prio-high { color: #DC2626; }
+  .prio-med { color: #D97706; }
+  .prio-low { color: var(--text-3); }
+
+  /* SLA BAR */
+  .sla-wrap { display: flex; align-items: center; gap:8px; }
+  .sla-bar-bg { flex: 1; height: 4px; background: var(--border); border-radius: 2px; min-width: 60px; }
+  .sla-bar { height: 4px; border-radius: 2px; transition: width 0.3s; }
+  .sla-ok { background: var(--green); }
+  .sla-warn { background: #F59E0B; }
+  .sla-late { background: #EF4444; }
+  .sla-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text-3); white-space: nowrap; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,23,20,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(2px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: slideUp 0.2s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(16px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-header {
+    padding: 20px 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+  }
+
+  .modal-close {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-2);
+    font-size: 16px;
+    transition: all 0.15s;
+  }
+
+  .modal-close:hover { background: var(--bg); color: var(--text); }
+
+  .modal-body { padding: 0 24px 24px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+
+  input, select, textarea {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--border-strong);
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* DETAIL PANEL */
+  .detail-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,23,20,0.4);
+    display: none;
+    z-index: 90;
+  }
+
+  .detail-overlay.open { display: block; }
+
+  .detail-panel {
+    position: fixed;
+    top: 0; right: -480px;
+    width: 480px;
+    height: 100vh;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    z-index: 95;
+    transition: right 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .detail-panel.open { right: 0; }
+
+  .detail-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    z-index: 1;
+  }
+
+  .detail-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-3);
+    margin-bottom: 6px;
+  }
+
+  .detail-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .detail-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .detail-body { padding: 24px; flex: 1; }
+
+  .detail-section { margin-bottom: 24px; }
+
+  .detail-section-title {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 10px;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .detail-row:last-child { border-bottom: none; }
+  .detail-key { color: var(--text-2); }
+  .detail-val { font-weight: 500; text-align: right; }
+
+  .status-select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+
+  .notes-area {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    resize: vertical;
+    min-height: 80px;
+    margin-top: 6px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .notes-area:focus { border-color: var(--border-strong); }
+
+  .save-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background 0.15s;
+  }
+
+  .save-btn:hover { background: #333; }
+
+  .delete-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    color: var(--red);
+    border: 1px solid #FECACA;
+    border-radius: var(--radius);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.15s;
+  }
+
+  .delete-btn:hover { background: #FEE2E2; }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-3);
+  }
+
+  .empty-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--text);
+    color: var(--bg);
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    z-index: 200;
+    pointer-events: none;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* VIEWS */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* KANBAN */
+  .kanban {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+
+  .kanban-col {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .kanban-header {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .kanban-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .kanban-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kanban-body { padding: 10px; min-height: 80px; }
+
+  .kanban-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .kanban-card:last-child { margin-bottom: 0; }
+  .kanban-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+
+  .kanban-card-name {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .kanban-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .kanban-card-client {
+    font-size: 10px;
+    color: var(--text-3);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .kanban { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">Neo<br>Consulting</div>
+      <div class="logo-sub">AI · First</div>
+    </div>
+
+    <div class="nav-section">Sistema</div>
+
+    <div class="nav-item active" onclick="setView('table')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="1" y="1" width="14" height="14" rx="2"/>
+        <line x1="1" y1="6" x2="15" y2="6"/>
+        <line x1="1" y1="10" x2="15" y2="10"/>
+        <line x1="5" y1="6" x2="5" y2="15"/>
+      </svg>
+      Requerimientos
+    </div>
+
+    <div class="nav-item" onclick="setView('kanban')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="1" y="1" width="4" height="14" rx="1"/>
+        <rect x="6" y="1" width="4" height="10" rx="1"/>
+        <rect x="11" y="1" width="4" height="12" rx="1"/>
+      </svg>
+      Kanban
+    </div>
+
+    <div class="nav-item" onclick="setView('dashboard')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="7"/>
+        <path d="M8 8L12 5"/>
+        <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+      </svg>
+      Dashboard
+    </div>
+
+    <div class="nav-section">Acciones</div>
+
+    <div class="nav-item" onclick="openModal()">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="7"/>
+        <line x1="8" y1="5" x2="8" y2="11"/>
+        <line x1="5" y1="8" x2="11" y2="8"/>
+      </svg>
+      Nuevo requerimiento
+    </div>
+
+    <div class="sidebar-footer">
+      v1.0 · <span id="today-date"></span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-title" id="view-title">Requerimientos</div>
+      <div class="topbar-actions">
+        <div class="filters" id="filter-area">
+          <button class="filter-btn active" onclick="setFilter('todos', this)">Todos</button>
+          <button class="filter-btn" onclick="setFilter('Nuevo', this)">Nuevo</button>
+          <button class="filter-btn" onclick="setFilter('En progreso', this)">En progreso</button>
+          <button class="filter-btn" onclick="setFilter('Completado', this)">Completado</button>
+        </div>
+        <button class="btn btn-primary" onclick="openModal()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/>
+          </svg>
+          Nuevo
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ALERTS -->
+      <div class="alerts" id="alerts-zone"></div>
+
+      <!-- VIEW: TABLE -->
+      <div class="view active" id="view-table">
+        <div class="section-header">
+          <div class="section-title" id="result-count"></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Requerimiento</th>
+                <th>Estado</th>
+                <th>Prioridad</th>
+                <th>Responsable</th>
+                <th>Fecha límite</th>
+                <th>SLA</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VIEW: KANBAN -->
+      <div class="view" id="view-kanban">
+        <div class="kanban" id="kanban-board"></div>
+      </div>
+
+      <!-- VIEW: DASHBOARD -->
+      <div class="view" id="view-dashboard">
+        <div class="metrics" id="metrics-grid"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;">
+          <div class="table-wrap" id="dash-recent"></div>
+          <div class="table-wrap" id="dash-urgent"></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+</div>
+
+<!-- MODAL: NUEVO -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nuevo requerimiento</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nombre del requerimiento *</label>
+          <input type="text" id="f-name" placeholder="Ej: Implementar módulo CRM">
+        </div>
+        <div class="form-group">
+          <label>Cliente *</label>
+          <input type="text" id="f-client" placeholder="Nombre del cliente">
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="f-type">
+            <option>Implementación</option>
+            <option>Consultoría</option>
+            <option>Capacitación</option>
+            <option>Soporte</option>
+            <option>Análisis</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Prioridad</label>
+          <select id="f-priority">
+            <option value="Alta">Alta</option>
+            <option value="Media" selected>Media</option>
+            <option value="Baja">Baja</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Responsable</label>
+          <input type="text" id="f-owner" placeholder="Nombre del responsable">
+        </div>
+        <div class="form-group">
+          <label>Fecha límite</label>
+          <input type="date" id="f-due">
+        </div>
+        <div class="form-group full">
+          <label>Descripción</label>
+          <textarea id="f-desc" placeholder="Detalle del requerimiento..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveReq()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail-overlay" id="detail-overlay" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-header" id="detail-header"></div>
+  <div class="detail-body" id="detail-body"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+const STATUSES = ['Nuevo','En revisión','En progreso','Completado','Cancelado'];
+const STATUS_CLASSES = {
+  'Nuevo': 's-nuevo',
+  'En revisión': 's-revision',
+  'En progreso': 's-progreso',
+  'Completado': 's-completado',
+  'Cancelado': 's-cancelado'
+};
+
+const SAMPLE = [
+  { id:'NEO-001', name:'Implementar módulo CRM con IA', client:'TechPeru S.A.', type:'Implementación', priority:'Alta', owner:'Sofía Ramírez', due:'2026-04-18', status:'En progreso', desc:'Integración de CRM con capacidades predictivas para pipeline de ventas.', created:'2026-04-01' },
+  { id:'NEO-002', name:'Capacitación en herramientas de automatización', client:'Grupo Andino', type:'Capacitación', priority:'Media', owner:'Carlos Méndez', due:'2026-04-20', status:'Nuevo', desc:'Workshop de 2 días sobre Zapier, Make y n8n para el equipo operativo.', created:'2026-04-03' },
+  { id:'NEO-003', name:'Análisis de madurez digital', client:'Importex SAC', type:'Análisis', priority:'Alta', owner:'Ana Torres', due:'2026-04-15', status:'En revisión', desc:'Diagnóstico de procesos actuales y hoja de ruta de transformación digital.', created:'2026-04-02' },
+  { id:'NEO-004', name:'Dashboard de KPIs comerciales', client:'Finanzas Andes', type:'Implementación', priority:'Media', owner:'Sofía Ramírez', due:'2026-05-05', status:'Nuevo', desc:'Power BI conectado a fuentes de datos de ventas y marketing.', created:'2026-04-05' },
+  { id:'NEO-005', name:'Automatización de reportes semanales', client:'TechPeru S.A.', type:'Consultoría', priority:'Baja', owner:'Carlos Méndez', due:'2026-05-15', status:'Completado', desc:'Flujo automatizado que genera y distribuye reportes por correo cada lunes.', created:'2026-03-20' },
+  { id:'NEO-006', name:'Propuesta de chatbot de atención al cliente', client:'Retail Lima', type:'Consultoría', priority:'Alta', owner:'Ana Torres', due:'2026-04-12', status:'En progreso', desc:'Diseño e implementación de chatbot con LLM para soporte de primer nivel.', created:'2026-04-01' },
+  { id:'NEO-007', name:'Soporte post-implementación ERP', client:'Grupo Andino', type:'Soporte', priority:'Media', owner:'Luis Vargas', due:'2026-04-30', status:'En revisión', desc:'Acompañamiento y resolución de incidencias post-go-live.', created:'2026-04-06' },
+  { id:'NEO-008', name:'Estrategia de adopción IA para RRHH', client:'Importex SAC', type:'Consultoría', priority:'Alta', owner:'Sofía Ramírez', due:'2026-04-10', status:'Nuevo', desc:'Identificación de casos de uso de IA para el departamento de personas.', created:'2026-04-07' },
+];
+
+let data = JSON.parse(localStorage.getItem('neo_reqs') || 'null') || SAMPLE;
+let currentFilter = 'todos';
+let currentView = 'table';
+let editingId = null;
+let counter = data.length + 1;
+
+function save() { localStorage.setItem('neo_reqs', JSON.stringify(data)); }
+
+// ── UTILS ────────────────────────────────────────────────────────
+function nextId() {
+  const nums = data.map(r => parseInt(r.id.replace('NEO-',''),10)).filter(Boolean);
+  const max = nums.length ? Math.max(...nums) : 0;
+  return 'NEO-' + String(max+1).padStart(3,'0');
+}
+
+function today() { return new Date().toISOString().split('T')[0]; }
+
+function daysLeft(due) {
+  if (!due) return null;
+  const diff = Math.ceil((new Date(due) - new Date(today())) / 86400000);
+  return diff;
+}
+
+function slaClass(d, status) {
+  if (status === 'Completado' || status === 'Cancelado') return 'sla-ok';
+  if (d === null) return 'sla-ok';
+  if (d < 0) return 'sla-late';
+  if (d <= 3) return 'sla-warn';
+  return 'sla-ok';
+}
+
+function slaLabel(d, status) {
+  if (status === 'Completado') return 'Listo';
+  if (status === 'Cancelado') return 'N/A';
+  if (d === null) return '—';
+  if (d < 0) return Math.abs(d) + 'd vencido';
+  if (d === 0) return 'Hoy';
+  return d + 'd restantes';
+}
+
+function slaWidth(d, status) {
+  if (status === 'Completado' || status === 'Cancelado') return 100;
+  if (d === null) return 50;
+  if (d < 0) return 100;
+  const pct = Math.max(5, Math.min(100, 100 - (d / 14) * 100));
+  return Math.round(pct);
+}
+
+function prioHtml(p) {
+  const c = p === 'Alta' ? 'prio-high' : p === 'Media' ? 'prio-med' : 'prio-low';
+  const arrow = p === 'Alta' ? '▲' : p === 'Media' ? '▶' : '▼';
+  return `<span class="prio ${c}">${arrow} ${p}</span>`;
+}
+
+function badgeHtml(s) {
+  const cls = STATUS_CLASSES[s] || 's-nuevo';
+  return `<span class="badge ${cls}"><span class="badge-dot"></span>${s}</span>`;
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+// ── ALERTS ───────────────────────────────────────────────────────
+function renderAlerts() {
+  const zone = document.getElementById('alerts-zone');
+  const active = data.filter(r => r.status !== 'Completado' && r.status !== 'Cancelado');
+  const overdue = active.filter(r => r.due && daysLeft(r.due) < 0);
+  const warn = active.filter(r => r.due && daysLeft(r.due) >= 0 && daysLeft(r.due) <= 2);
+  let html = '';
+  if (overdue.length) html += `<div class="alert danger">⚠ ${overdue.length} requerimiento(s) vencido(s): ${overdue.map(r=>r.name).join(', ')}</div>`;
+  if (warn.length) html += `<div class="alert">⏰ ${warn.length} requerimiento(s) vencen en ≤ 2 días: ${warn.map(r=>r.name).join(', ')}</div>`;
+  zone.innerHTML = html;
+}
+
+// ── TABLE ────────────────────────────────────────────────────────
+function filtered() {
+  if (currentFilter === 'todos') return data;
+  return data.filter(r => r.status === currentFilter);
+}
+
+function renderTable() {
+  const rows = filtered();
+  const tbody = document.getElementById('table-body');
+  document.getElementById('result-count').textContent = rows.length + ' requerimiento(s)';
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📋</div>No hay requerimientos en esta vista.</div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(r => {
+    const d = daysLeft(r.due);
+    const sc = slaClass(d, r.status);
+    const sw = slaWidth(d, r.status);
+    const sl = slaLabel(d, r.status);
+    return `<tr onclick="openDetail('${r.id}')">
+      <td><span class="req-id">${r.id}</span></td>
+      <td>
+        <div class="req-name">${r.name}</div>
+        <div class="req-client">${r.client} · ${r.type}</div>
+      </td>
+      <td>${badgeHtml(r.status)}</td>
+      <td>${prioHtml(r.priority)}</td>
+      <td style="font-size:12px;color:var(--text-2)">${r.owner || '—'}</td>
+      <td style="font-size:12px;font-family:'DM Mono',monospace;color:var(--text-2)">${formatDate(r.due)}</td>
+      <td>
+        <div class="sla-wrap">
+          <div class="sla-bar-bg"><div class="sla-bar ${sc}" style="width:${sw}%"></div></div>
+          <span class="sla-label">${sl}</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── KANBAN ───────────────────────────────────────────────────────
+function renderKanban() {
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = STATUSES.map(s => {
+    const cards = data.filter(r => r.status === s);
+    return `<div class="kanban-col">
+      <div class="kanban-header">
+        <span class="kanban-title">${s}</span>
+        <span class="kanban-count">${cards.length}</span>
+      </div>
+      <div class="kanban-body">
+        ${cards.length ? cards.map(r => `
+          <div class="kanban-card" onclick="openDetail('${r.id}')">
+            <div class="kanban-card-name">${r.name}</div>
+            <div class="kanban-card-meta">
+              <span class="kanban-card-client">${r.client}</span>
+              ${prioHtml(r.priority)}
+            </div>
+          </div>`).join('') : `<div style="font-size:11px;color:var(--text-3);text-align:center;padding:20px 0;font-family:'DM Mono',monospace">Vacío</div>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── DASHBOARD ────────────────────────────────────────────────────
+function renderDashboard() {
+  const total = data.length;
+  const done = data.filter(r => r.status === 'Completado').length;
+  const active = data.filter(r => !['Completado','Cancelado'].includes(r.status)).length;
+  const urgent = data.filter(r => r.due && daysLeft(r.due) !== null && daysLeft(r.due) <= 2 && !['Completado','Cancelado'].includes(r.status)).length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+
+  document.getElementById('metrics-grid').innerHTML = `
+    <div class="metric-card total">
+      <div class="metric-label">Total</div>
+      <div class="metric-value">${total}</div>
+      <div class="metric-sub">requerimientos</div>
+    </div>
+    <div class="metric-card active">
+      <div class="metric-label">Activos</div>
+      <div class="metric-value">${active}</div>
+      <div class="metric-sub">en seguimiento</div>
+    </div>
+    <div class="metric-card done">
+      <div class="metric-label">Completados</div>
+      <div class="metric-value">${pct}%</div>
+      <div class="metric-sub">${done} de ${total}</div>
+    </div>
+    <div class="metric-card urgent">
+      <div class="metric-label">Urgentes</div>
+      <div class="metric-value">${urgent}</div>
+      <div class="metric-sub">vencen en ≤ 2 días</div>
+    </div>
+  `;
+
+  const recents = [...data].slice(-5).reverse();
+  const urgentList = data.filter(r => r.due && !['Completado','Cancelado'].includes(r.status))
+    .sort((a,b) => new Date(a.due) - new Date(b.due)).slice(0,5);
+
+  document.getElementById('dash-recent').innerHTML = `
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:0.5px">Recientes</div>
+    <table><tbody>${recents.map(r => `
+      <tr onclick="openDetail('${r.id}')" style="cursor:pointer">
+        <td style="padding:10px 16px">
+          <div style="font-size:12px;font-weight:500">${r.name}</div>
+          <div style="font-size:10px;color:var(--text-3);font-family:'DM Mono',monospace">${r.client}</div>
+        </td>
+        <td style="padding:10px 16px;text-align:right">${badgeHtml(r.status)}</td>
+      </tr>`).join('')}</tbody></table>`;
+
+  document.getElementById('dash-urgent').innerHTML = `
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:0.5px">Próximos a vencer</div>
+    <table><tbody>${urgentList.length ? urgentList.map(r => {
+      const d = daysLeft(r.due);
+      const sl = slaLabel(d, r.status);
+      const sc = slaClass(d, r.status);
+      const col = sc === 'sla-late' ? '#DC2626' : sc === 'sla-warn' ? '#D97706' : 'var(--green)';
+      return `<tr onclick="openDetail('${r.id}')" style="cursor:pointer">
+        <td style="padding:10px 16px">
+          <div style="font-size:12px;font-weight:500">${r.name}</div>
+          <div style="font-size:10px;color:var(--text-3);font-family:'DM Mono',monospace">${formatDate(r.due)}</div>
+        </td>
+        <td style="padding:10px 16px;text-align:right;font-size:11px;font-family:'DM Mono',monospace;color:${col}">${sl}</td>
+      </tr>`;}).join('') : '<tr><td style="padding:20px;text-align:center;color:var(--text-3);font-size:12px">Sin vencimientos próximos</td></tr>'}</tbody></table>`;
+}
+
+// ── RENDER ALL ───────────────────────────────────────────────────
+function renderAll() {
+  renderAlerts();
+  renderTable();
+  renderKanban();
+  renderDashboard();
+}
+
+// ── VIEW / FILTER ────────────────────────────────────────────────
+function setView(v) {
+  currentView = v;
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const titles = { table: 'Requerimientos', kanban: 'Kanban', dashboard: 'Dashboard' };
+  document.getElementById('view-title').textContent = titles[v];
+  document.getElementById('filter-area').style.display = v === 'table' ? 'flex' : 'none';
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+// ── MODAL ────────────────────────────────────────────────────────
+function openModal() {
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-client').value = '';
+  document.getElementById('f-type').value = 'Implementación';
+  document.getElementById('f-priority').value = 'Media';
+  document.getElementById('f-owner').value = '';
+  document.getElementById('f-due').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+}
+
+function saveReq() {
+  const name = document.getElementById('f-name').value.trim();
+  const client = document.getElementById('f-client').value.trim();
+  if (!name || !client) { toast('Completa los campos obligatorios'); return; }
+
+  const req = {
+    id: nextId(),
+    name,
+    client,
+    type: document.getElementById('f-type').value,
+    priority: document.getElementById('f-priority').value,
+    owner: document.getElementById('f-owner').value.trim(),
+    due: document.getElementById('f-due').value,
+    status: 'Nuevo',
+    desc: document.getElementById('f-desc').value.trim(),
+    created: today()
+  };
+
+  data.unshift(req);
+  save();
+  closeModal();
+  renderAll();
+  toast('Requerimiento creado · ' + req.id);
+}
+
+// ── DETAIL PANEL ─────────────────────────────────────────────────
+function openDetail(id) {
+  const r = data.find(x => x.id === id);
+  if (!r) return;
+  editingId = id;
+
+  const d = daysLeft(r.due);
+  const sc = slaClass(d, r.status);
+  const sl = slaLabel(d, r.status);
+  const sw = slaWidth(d, r.status);
+
+  document.getElementById('detail-header').innerHTML = `
+    <div class="detail-id">${r.id} · ${r.type}</div>
+    <div class="detail-title">${r.name}</div>
+    <div class="detail-meta">
+      ${badgeHtml(r.status)}
+      ${prioHtml(r.priority)}
+      <span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text-3)">${r.client}</span>
+    </div>
+  `;
+
+  document.getElementById('detail-body').innerHTML = `
+    <div class="detail-section">
+      <div class="detail-section-title">Detalles</div>
+      <div class="detail-row"><span class="detail-key">Cliente</span><span class="detail-val">${r.client}</span></div>
+      <div class="detail-row"><span class="detail-key">Responsable</span><span class="detail-val">${r.owner || '—'}</span></div>
+      <div class="detail-row"><span class="detail-key">Fecha límite</span><span class="detail-val">${formatDate(r.due)}</span></div>
+      <div class="detail-row"><span class="detail-key">SLA</span><span class="detail-val" style="color:${sc==='sla-late'?'#DC2626':sc==='sla-warn'?'#D97706':'var(--green)'}">${sl}</span></div>
+      <div class="detail-row"><span class="detail-key">Creado</span><span class="detail-val">${formatDate(r.created)}</span></div>
+    </div>
+
+    ${r.desc ? `<div class="detail-section">
+      <div class="detail-section-title">Descripción</div>
+      <p style="font-size:13px;color:var(--text-2);line-height:1.7">${r.desc}</p>
+    </div>` : ''}
+
+    <div class="detail-section">
+      <div class="detail-section-title">Cambiar estado</div>
+      <select class="status-select" id="detail-status" onchange="updateStatus(this.value)">
+        ${STATUSES.map(s => `<option value="${s}" ${s===r.status?'selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Notas internas</div>
+      <textarea class="notes-area" id="detail-notes" placeholder="Agrega observaciones...">${r.notes||''}</textarea>
+      <button class="save-btn" onclick="saveNotes()">Guardar notas</button>
+    </div>
+
+    <div class="detail-section">
+      <button class="delete-btn" onclick="deleteReq('${r.id}')">Eliminar requerimiento</button>
+    </div>
+  `;
+
+  document.getElementById('detail-overlay').classList.add('open');
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-overlay').classList.remove('open');
+  document.getElementById('detail-panel').classList.remove('open');
+  editingId = null;
+}
+
+function updateStatus(s) {
+  const r = data.find(x => x.id === editingId);
+  if (!r) return;
+  r.status = s;
+  save();
+  renderAll();
+  openDetail(editingId);
+  toast('Estado actualizado → ' + s);
+}
+
+function saveNotes() {
+  const r = data.find(x => x.id === editingId);
+  if (!r) return;
+  r.notes = document.getElementById('detail-notes').value;
+  save();
+  toast('Notas guardadas');
+}
+
+function deleteReq(id) {
+  if (!confirm('¿Eliminar este requerimiento?')) return;
+  data = data.filter(r => r.id !== id);
+  save();
+  closeDetail();
+  renderAll();
+  toast('Requerimiento eliminado');
+}
+
+// ── TOAST ────────────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+document.getElementById('today-date').textContent = new Date().toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' });
+
+// Set default due date to 14 days from now
+const def = new Date(); def.setDate(def.getDate()+14);
+document.getElementById('f-due').value = def.toISOString().split('T')[0];
+
+renderAll();
+</script>
+</body>
+</html>
